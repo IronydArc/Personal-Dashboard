@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&amp;family=Karla:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet">
+<style>
+  html, body { margin:0; padding:0; }
+  body { font-family:'Karla', sans-serif; -webkit-font-smoothing:antialiased; }
+  [data-theme="light"] {
+    --bg:#FAF7F1; --surface:#FFFFFF; --text-primary:#33344A; --text-body:#4A4B63; --text-secondary:#6B6D85; --text-faint:#9A9BB0;
+    --border:#ECE8DE; --accent:#5C5F9E; --accent-hov:#43857D; --accent-muted:#ECEDF8;
+    --accent-soft-bg:#F2F0FA; --accent-soft-bd:#E1DFF0; --accent-soft-fg:#54567A;
+    --warn:#7A6A35; --warn-bg:#FAF6EC; --warn-bd:#EFE7CF; --good:#3E7A57; --risk:#8C5140;
+    --pre-bg:#26283A; --pre-fg:#E9EAF4; --pre-dim:#8A8CA6; --pre-hi:#A0A3E0;
+  }
+  [data-theme="dark"] {
+    --bg:#1D1E2B; --surface:#26283A; --text-primary:#E9EAF4; --text-body:#C6C8DC; --text-secondary:#B4B6CC; --text-faint:#8A8CA6;
+    --border:#383A52; --accent:#A0A3E0; --accent-hov:#7CC4B8; --accent-muted:#34365C;
+    --accent-soft-bg:#2E3052; --accent-soft-bd:#41436C; --accent-soft-fg:#C3C5E8;
+    --warn:#D9C88A; --warn-bg:#403A26; --warn-bd:#555033; --good:#8CCBA4; --risk:#E0A08D;
+    --pre-bg:#16171F; --pre-fg:#E9EAF4; --pre-dim:#8A8CA6; --pre-hi:#A0A3E0;
+  }
+  [data-theme] a { color:var(--accent); text-decoration:none; font-weight:600; }
+  [data-theme] a:hover { color:var(--accent-hov); }
+  * { box-sizing:border-box; }
+</style></helmet>
+<div data-theme="{{ theme }}" style="min-height:100vh; background:var(--bg); color:var(--text-primary); transition:background .3s;">
+<div style="max-width:860px; margin:0 auto; padding:56px 32px 120px;">
+
+  <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px;">
+    <div style="font-size:12px; font-weight:700; letter-spacing:0.14em; color:var(--text-faint);">PROJECT DOCUMENTATION</div>
+    <button onClick="{{ togTheme }}" style="font-family:'Karla', sans-serif; font-size:13px; font-weight:700; color:var(--accent); background:var(--accent-muted); border:none; border-radius:99px; padding:8px 16px; cursor:pointer;">{{ themeLabel }}</button>
+  </div>
+  <h1 style="font-family:'Newsreader', serif; font-weight:500; font-size:44px; line-height:1.08; margin:0 0 14px;">How these files work</h1>
+  <p style="font-size:16px; line-height:1.6; color:var(--text-secondary); margin:0 0 28px;">Your dashboard is not a classic HTML + CSS + JS site. It is a single <strong>Design Component</strong> file (<code style="font-family:'JetBrains Mono', monospace; font-size:14px; background:var(--accent-muted); padding:2px 6px; border-radius:6px;">.dc.html</code>) plus a shared runtime (<code style="font-family:'JetBrains Mono', monospace; font-size:14px; background:var(--accent-muted); padding:2px 6px; border-radius:6px;">support.js</code>). This page explains every moving part and tells you exactly where to edit what. New to JavaScript? Read <a href="Learn the Code.dc.html">Part 2 · JavaScript from zero</a> after this overview.</p>
+
+  <nav style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:44px;">
+    <a href="#files" style="font-size:13px; padding:6px 14px; border-radius:99px; background:var(--surface); border:1px solid var(--border);">1 · The files</a>
+    <a href="#anatomy" style="font-size:13px; padding:6px 14px; border-radius:99px; background:var(--surface); border:1px solid var(--border);">2 · File anatomy</a>
+    <a href="#template" style="font-size:13px; padding:6px 14px; border-radius:99px; background:var(--surface); border:1px solid var(--border);">3 · Template language</a>
+    <a href="#logic" style="font-size:13px; padding:6px 14px; border-radius:99px; background:var(--surface); border:1px solid var(--border);">4 · Logic class</a>
+    <a href="#dataflow" style="font-size:13px; padding:6px 14px; border-radius:99px; background:var(--surface); border:1px solid var(--border);">5 · Data flow</a>
+    <a href="#persist" style="font-size:13px; padding:6px 14px; border-radius:99px; background:var(--surface); border:1px solid var(--border);">6 · Saved state</a>
+    <a href="#where" style="font-size:13px; padding:6px 14px; border-radius:99px; background:var(--surface); border:1px solid var(--border);">7 · Where to edit what</a>
+    <a href="#gotchas" style="font-size:13px; padding:6px 14px; border-radius:99px; background:var(--surface); border:1px solid var(--border);">8 · Rules &amp; gotchas</a>
+  </nav>
+
+  <!-- 1 -->
+  <section id="files" style="margin-bottom:48px;">
+    <h2 style="font-family:'Newsreader', serif; font-weight:500; font-size:28px; margin:0 0 12px;">1 · The files in this project</h2>
+    <div style="display:flex; flex-direction:column; gap:10px;">
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:14px 18px;">
+        <div style="font-family:'JetBrains Mono', monospace; font-size:13.5px; font-weight:600; margin-bottom:4px;">Personal Dashboard.dc.html</div>
+        <div style="font-size:14px; line-height:1.55; color:var(--text-secondary);">The entire app: markup, data, and behavior in one file (~3,000 lines). This is the only file you edit.</div>
+      </div>
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:14px 18px;">
+        <div style="font-family:'JetBrains Mono', monospace; font-size:13.5px; font-weight:600; margin-bottom:4px;">Strategy Dashboard.dc.html</div>
+        <div style="font-size:14px; line-height:1.55; color:var(--text-secondary);">An earlier version, kept as backup. Same structure.</div>
+      </div>
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:14px 18px;">
+        <div style="font-family:'JetBrains Mono', monospace; font-size:13.5px; font-weight:600; margin-bottom:4px;">support.js</div>
+        <div style="font-size:14px; line-height:1.55; color:var(--text-secondary);">The runtime engine. It reads the template, fills in the <code style="font-family:'JetBrains Mono', monospace;">{{ ob }} … {{ cb }}</code> holes, runs the logic class, and renders everything with React under the hood. <strong>Never edit this file</strong> — it is generated and shared by all components.</div>
+      </div>
+    </div>
+    <p style="font-size:14.5px; line-height:1.6; color:var(--text-secondary); margin:14px 0 0;">The <code style="font-family:'JetBrains Mono', monospace;">.dc.html</code> file opens directly in a browser like any HTML file — <code style="font-family:'JetBrains Mono', monospace;">support.js</code> just has to sit next to it.</p>
+  </section>
+
+  <!-- 2 -->
+  <section id="anatomy" style="margin-bottom:48px;">
+    <h2 style="font-family:'Newsreader', serif; font-weight:500; font-size:28px; margin:0 0 12px;">2 · Anatomy of the .dc.html file</h2>
+    <p style="font-size:14.5px; line-height:1.6; color:var(--text-secondary); margin:0 0 14px;">Four zones, top to bottom:</p>
+    <pre style="font-family:'JetBrains Mono', monospace; font-size:12.5px; line-height:1.7; background:var(--pre-bg); color:var(--pre-fg); border-radius:14px; padding:18px 22px; overflow-x:auto; margin:0 0 16px;">&lt;!DOCTYPE html&gt;
+&lt;head&gt; … &lt;script src="./support.js"&gt; … &lt;/head&gt;      ← ① loader (boilerplate)
+&lt;body&gt;
+&lt;x-dc&gt;
+  &lt;helmet&gt; fonts, theme CSS variables, resets &lt;/helmet&gt;   ← ② head content
+  … the TEMPLATE: all markup, with {{ ob }} holes {{ cb }} …           ← ③ the view
+&lt;/x-dc&gt;
+&lt;script type="text/x-dc" data-dc-scr&#105;pt data-props="…"&gt;
+  class Component extends DCLogic { … }                    ← ④ the logic
+&lt;/script&gt;
+&lt;/body&gt;</pre>
+    <div style="display:flex; flex-direction:column; gap:8px; font-size:14.5px; line-height:1.6; color:var(--text-secondary);">
+      <div><strong style="color:var(--text-primary);">① Loader</strong> — fixed boilerplate; leave alone.</div>
+      <div><strong style="color:var(--text-primary);">② <code style="font-family:'JetBrains Mono', monospace;">&lt;helmet&gt;</code></strong> — the equivalent of <code style="font-family:'JetBrains Mono', monospace;">&lt;head&gt;</code>: font links, the light/dark theme variables (<code style="font-family:'JetBrains Mono', monospace;">[data-theme="light"]</code> / <code style="font-family:'JetBrains Mono', monospace;">[data-theme="dark"]</code>), and body resets. This is the <em>only</em> place a <code style="font-family:'JetBrains Mono', monospace;">&lt;style&gt;</code> or <code style="font-family:'JetBrains Mono', monospace;">&lt;script&gt;</code> tag is allowed.</div>
+      <div><strong style="color:var(--text-primary);">③ Template</strong> — everything visible. In your dashboard: lines ~60–1300. All styling is <em>inline</em> (<code style="font-family:'JetBrains Mono', monospace;">style="…"</code>) using the CSS variables from ②; there are no CSS classes.</div>
+      <div><strong style="color:var(--text-primary);">④ Logic class</strong> — one JavaScript class named <code style="font-family:'JetBrains Mono', monospace;">Component</code>. In your dashboard: lines ~1306 to the end. All data and behavior live here.</div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section id="template" style="margin-bottom:48px;">
+    <h2 style="font-family:'Newsreader', serif; font-weight:500; font-size:28px; margin:0 0 12px;">3 · The template language</h2>
+
+    <h3 style="font-family:'Newsreader', serif; font-weight:500; font-size:20px; margin:20px 0 8px;">Holes: <code style="font-family:'JetBrains Mono', monospace; font-size:17px;">{{ ob }} name {{ cb }}</code></h3>
+    <p style="font-size:14.5px; line-height:1.6; color:var(--text-secondary); margin:0 0 10px;">A hole is filled with a value the logic class provides. Holes are <strong>lookups only</strong> — a name or dotted path like <code style="font-family:'JetBrains Mono', monospace;">{{ ob }} n.label {{ cb }}</code>. You can <em>never</em> put code in one (<code style="font-family:'JetBrains Mono', monospace;">{{ ob }} a + b {{ cb }}</code> silently renders nothing). Any computation happens in the logic class, which exposes the result under a name.</p>
+    <p style="font-size:14.5px; line-height:1.6; color:var(--text-secondary); margin:0 0 10px;">Holes work in text and in attributes. <code style="font-family:'JetBrains Mono', monospace;">width:{{ ob }} sbWidth {{ cb }}</code> mixes into the style string; <code style="font-family:'JetBrains Mono', monospace;">onClick="{{ ob }} togTheme {{ cb }}"</code> passes a function. Event names are camelCase like React (<code style="font-family:'JetBrains Mono', monospace;">onClick</code>, not <code style="font-family:'JetBrains Mono', monospace;">onclick</code>).</p>
+
+    <h3 style="font-family:'Newsreader', serif; font-weight:500; font-size:20px; margin:20px 0 8px;">Conditionals and loops</h3>
+    <p style="font-size:14.5px; line-height:1.6; color:var(--text-secondary); margin:0 0 10px;">Instead of writing repeated markup or toggling with JS, the template has two control tags:</p>
+    <pre style="font-family:'JetBrains Mono', monospace; font-size:12.5px; line-height:1.7; background:var(--pre-bg); color:var(--pre-fg); border-radius:14px; padding:18px 22px; overflow-x:auto; margin:0 0 12px;">&lt;sc&#45;if value="{{ ob }} isHome {{ cb }}" hint-placeholder-val="{{ ob }} true {{ cb }}"&gt;
+  … rendered only when isHome is true …
+&lt;/sc&#45;if&gt;
+
+&lt;sc&#45;for list="{{ ob }} navItems {{ cb }}" as="n" hint-placeholder-count="7"&gt;
+  &lt;div&gt;{{ ob }} n.label {{ cb }}&lt;/div&gt;   ← repeated once per item; $index available
+&lt;/sc&#45;for&gt;</pre>
+    <p style="font-size:14.5px; line-height:1.6; color:var(--text-secondary); margin:0;">The <code style="font-family:'JetBrains Mono', monospace;">hint-*</code> attributes are placeholders shown while the page is still loading its values — keep them when copying a block.</p>
+
+    <h3 style="font-family:'Newsreader', serif; font-weight:500; font-size:20px; margin:20px 0 8px;">Styling</h3>
+    <p style="font-size:14.5px; line-height:1.6; color:var(--text-secondary); margin:0;">Everything is styled inline via <code style="font-family:'JetBrains Mono', monospace;">style="…"</code>, referencing the theme variables (<code style="font-family:'JetBrains Mono', monospace;">var(--surface)</code>, <code style="font-family:'JetBrains Mono', monospace;">var(--accent)</code>…). Hover/focus states use special attributes: <code style="font-family:'JetBrains Mono', monospace;">style-hover="background:var(--accent-muted);"</code>. Because both themes define the same variable names, the theme toggle just swaps <code style="font-family:'JetBrains Mono', monospace;">data-theme</code> on the root div and every color updates.</p>
+  </section>
+
+  <!-- 4 -->
+  <section id="logic" style="margin-bottom:48px;">
+    <h2 style="font-family:'Newsreader', serif; font-weight:500; font-size:28px; margin:0 0 12px;">4 · The logic class</h2>
+    <p style="font-size:14.5px; line-height:1.6; color:var(--text-secondary); margin:0 0 12px;">It behaves like a React class component (state, <code style="font-family:'JetBrains Mono', monospace;">setState</code>, lifecycle) but has <strong>no render method</strong>. Instead it has <code style="font-family:'JetBrains Mono', monospace;">renderVals()</code>, which returns a plain object — and <em>every key of that object becomes a hole name the template can use</em>.</p>
+    <pre style="font-family:'JetBrains Mono', monospace; font-size:12.5px; line-height:1.7; background:var(--pre-bg); color:var(--pre-fg); border-radius:14px; padding:18px 22px; overflow-x:auto; margin:0 0 14px;">class Component extends DCLogic {
+  state = { theme: 'dark', nav: 'home', … };   // live UI state
+
+  componentDidMount() { …load saved checkmarks… }  // runs once on load
+
+  plans() { return { studyAbroad: {…}, portfolio: {…}, … } }  // ★ ALL CONTENT
+
+  renderVals() {                     // ★ the bridge to the template
+    return {
+      theme: this.state.theme,       // → data-theme="{{ ob }} theme {{ cb }}"
+      isHome: this.state.nav === 'home',   // computed, exposed by name
+      navItems: […],                 // arrays for sc-for loops
+      togTheme: () =&gt; this.setState({ theme: … })  // click handlers
+    };
+  }
+}</pre>
+    <p style="font-size:14.5px; line-height:1.6; color:var(--text-secondary); margin:0;">Key structure in <strong>your</strong> dashboard: the <code style="font-family:'JetBrains Mono', monospace;">plans()</code> method (~line 1354) holds every word of content as a big data object — plan titles, routes A/B/C, tiers, action items, timeline bars. <code style="font-family:'JetBrains Mono', monospace;">renderVals()</code> (~line 2172) transforms that data into the flat values and handlers the template consumes.</p>
+  </section>
+
+  <!-- 5 -->
+  <section id="dataflow" style="margin-bottom:48px;">
+    <h2 style="font-family:'Newsreader', serif; font-weight:500; font-size:28px; margin:0 0 12px;">5 · How data flows</h2>
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:20px 22px;">
+      <div style="display:flex; flex-direction:column; font-size:14px;">
+        <div style="display:flex; gap:12px; align-items:baseline; padding:8px 0;"><span style="flex:none; width:130px; font-weight:700; color:var(--accent);">plans() data</span><span style="color:var(--text-secondary); line-height:1.5;">static content: text, dates, structure</span></div>
+        <div style="padding-left:56px; color:var(--text-faint);">↓</div>
+        <div style="display:flex; gap:12px; align-items:baseline; padding:8px 0;"><span style="flex:none; width:130px; font-weight:700; color:var(--accent);">state</span><span style="color:var(--text-secondary); line-height:1.5;">what's selected, expanded, checked, which theme</span></div>
+        <div style="padding-left:56px; color:var(--text-faint);">↓</div>
+        <div style="display:flex; gap:12px; align-items:baseline; padding:8px 0;"><span style="flex:none; width:130px; font-weight:700; color:var(--accent);">renderVals()</span><span style="color:var(--text-secondary); line-height:1.5;">combines both into flat named values + handlers</span></div>
+        <div style="padding-left:56px; color:var(--text-faint);">↓</div>
+        <div style="display:flex; gap:12px; align-items:baseline; padding:8px 0;"><span style="flex:none; width:130px; font-weight:700; color:var(--accent);">template holes</span><span style="color:var(--text-secondary); line-height:1.5;">{{ ob }} … {{ cb }} fill in; conditionals and loops expand</span></div>
+        <div style="padding-left:56px; color:var(--text-faint);">↓ &nbsp;(click → handler → setState → renderVals runs again → view updates)</div>
+      </div>
+    </div>
+    <p style="font-size:14.5px; line-height:1.6; color:var(--text-secondary); margin:12px 0 0;">There is no manual DOM manipulation anywhere — no <code style="font-family:'JetBrains Mono', monospace;">querySelector</code>, no <code style="font-family:'JetBrains Mono', monospace;">addEventListener</code>. Change state, and the runtime re-renders whatever depends on it.</p>
+  </section>
+
+  <!-- 6 -->
+  <section id="persist" style="margin-bottom:48px;">
+    <h2 style="font-family:'Newsreader', serif; font-weight:500; font-size:28px; margin:0 0 12px;">6 · What gets saved between visits</h2>
+    <p style="font-size:14.5px; line-height:1.6; color:var(--text-secondary); margin:0 0 12px;">Three things persist in the browser's <code style="font-family:'JetBrains Mono', monospace;">localStorage</code>, written by the handlers and re-loaded in <code style="font-family:'JetBrains Mono', monospace;">componentDidMount()</code>:</p>
+    <div style="display:flex; flex-direction:column; gap:8px; font-size:14px; color:var(--text-secondary);">
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px 16px;"><code style="font-family:'JetBrains Mono', monospace; font-weight:600; color:var(--text-primary);">strategy-dashboard-checks</code> — every checkbox you tick</div>
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px 16px;"><code style="font-family:'JetBrains Mono', monospace; font-weight:600; color:var(--text-primary);">pf-gate</code> — portfolio gate self-assessment levels</div>
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px 16px;"><code style="font-family:'JetBrains Mono', monospace; font-weight:600; color:var(--text-primary);">pf-track</code> — selected portfolio track</div>
+    </div>
+    <p style="font-size:14.5px; line-height:1.6; color:var(--text-secondary); margin:12px 0 0;">Everything else (theme, open panels, selected route) resets on reload. Clearing browser site data wipes your checkmarks.</p>
+  </section>
+
+  <!-- 7 -->
+  <section id="where" style="margin-bottom:48px;">
+    <h2 style="font-family:'Newsreader', serif; font-weight:500; font-size:28px; margin:0 0 12px;">7 · Where to edit what</h2>
+    <div style="display:flex; flex-direction:column; gap:8px;">
+      <div style="background:var(--accent-soft-bg); border:1px solid var(--accent-soft-bd); border-radius:12px; padding:13px 16px; font-size:14px; line-height:1.55; color:var(--accent-soft-fg);"><strong>Change any text, date, or plan content</strong> → the <code style="font-family:'JetBrains Mono', monospace;">plans()</code> data object (from ~line 1354). Titles, routes, tiers, tasks, timeline bars, wiki insights — it is all plain strings and arrays there. Search for the exact text you see on screen.</div>
+      <div style="background:var(--accent-soft-bg); border:1px solid var(--accent-soft-bd); border-radius:12px; padding:13px 16px; font-size:14px; line-height:1.55; color:var(--accent-soft-fg);"><strong>Change colors / themes</strong> → the two <code style="font-family:'JetBrains Mono', monospace;">[data-theme]</code> variable blocks in <code style="font-family:'JetBrains Mono', monospace;">&lt;helmet&gt;</code> (top of file). One variable change recolors everything that uses it, in both themes.</div>
+      <div style="background:var(--accent-soft-bg); border:1px solid var(--accent-soft-bd); border-radius:12px; padding:13px 16px; font-size:14px; line-height:1.55; color:var(--accent-soft-fg);"><strong>Change layout / spacing / typography of a section</strong> → find its markup in the template (sections carry <code style="font-family:'JetBrains Mono', monospace;">data-screen-label</code> attributes like "Home") and edit the inline <code style="font-family:'JetBrains Mono', monospace;">style="…"</code>.</div>
+      <div style="background:var(--accent-soft-bg); border:1px solid var(--accent-soft-bd); border-radius:12px; padding:13px 16px; font-size:14px; line-height:1.55; color:var(--accent-soft-fg);"><strong>Add a new plan</strong> → append an entry in <code style="font-family:'JetBrains Mono', monospace;">plans()</code> following the existing 3-zone shape, plus a nav item in the NAV list. No new markup needed — the plan view is generic and renders whatever plan is selected.</div>
+      <div style="background:var(--accent-soft-bg); border:1px solid var(--accent-soft-bd); border-radius:12px; padding:13px 16px; font-size:14px; line-height:1.55; color:var(--accent-soft-fg);"><strong>Change behavior</strong> (what a click does, what counts as "today") → the handlers and computations inside <code style="font-family:'JetBrains Mono', monospace;">renderVals()</code>.</div>
+      <div style="background:var(--accent-soft-bg); border:1px solid var(--accent-soft-bd); border-radius:12px; padding:13px 16px; font-size:14px; line-height:1.55; color:var(--accent-soft-fg);"><strong>Tweakable settings</strong> → the <code style="font-family:'JetBrains Mono', monospace;">data-props</code> JSON on the logic script tag declares props (currently <code style="font-family:'JetBrains Mono', monospace;">defaultRoute</code> and <code style="font-family:'JetBrains Mono', monospace;">dimStrength</code>) that surface as editor controls and reach the code as <code style="font-family:'JetBrains Mono', monospace;">this.props.x</code>.</div>
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section id="gotchas">
+    <h2 style="font-family:'Newsreader', serif; font-weight:500; font-size:28px; margin:0 0 12px;">8 · Rules &amp; gotchas</h2>
+    <div style="display:flex; flex-direction:column; gap:9px; font-size:14.5px; line-height:1.6; color:var(--text-secondary);">
+      <div style="display:flex; gap:10px;"><span style="flex:none; color:var(--risk); font-weight:700;">✕</span><span>No expressions in holes. <code style="font-family:'JetBrains Mono', monospace;">{{ ob }} items.length {{ cb }}</code> works (dotted lookup); <code style="font-family:'JetBrains Mono', monospace;">{{ ob }} count + 1 {{ cb }}</code> renders nothing. Compute in <code style="font-family:'JetBrains Mono', monospace;">renderVals()</code>.</span></div>
+      <div style="display:flex; gap:10px;"><span style="flex:none; color:var(--risk); font-weight:700;">✕</span><span>No CSS classes or stylesheets in the body — inline styles only. <code style="font-family:'JetBrains Mono', monospace;">&lt;style&gt;</code> in helmet is reserved for fonts, keyframes, variables, and resets.</span></div>
+      <div style="display:flex; gap:10px;"><span style="flex:none; color:var(--risk); font-weight:700;">✕</span><span>No <code style="font-family:'JetBrains Mono', monospace;">&lt;script&gt;</code> tags in the template body. All JS lives in the logic class; run-on-load code goes in <code style="font-family:'JetBrains Mono', monospace;">componentDidMount()</code>.</span></div>
+      <div style="display:flex; gap:10px;"><span style="flex:none; color:var(--risk); font-weight:700;">✕</span><span>The class must be named exactly <code style="font-family:'JetBrains Mono', monospace;">Component</code> and extend <code style="font-family:'JetBrains Mono', monospace;">DCLogic</code>. No <code style="font-family:'JetBrains Mono', monospace;">import</code>/<code style="font-family:'JetBrains Mono', monospace;">export</code> — it is plain classic JavaScript.</span></div>
+      <div style="display:flex; gap:10px;"><span style="flex:none; color:var(--good); font-weight:700;">✓</span><span>To update state, always use <code style="font-family:'JetBrains Mono', monospace;">this.setState(…)</code> — never assign to <code style="font-family:'JetBrains Mono', monospace;">this.state</code> directly, or the view won't refresh.</span></div>
+      <div style="display:flex; gap:10px;"><span style="flex:none; color:var(--good); font-weight:700;">✓</span><span>When copying a repeated block, keep the whole loop/conditional wrapper including its <code style="font-family:'JetBrains Mono', monospace;">hint-*</code> attributes.</span></div>
+      <div style="display:flex; gap:10px;"><span style="flex:none; color:var(--good); font-weight:700;">✓</span><span>Before big edits, duplicate the file (as was done with <em>Strategy Dashboard</em>) so you always have a working version to fall back to.</span></div>
+    </div>
+  </section>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { theme: 'light' };
+  componentDidMount() {
+    try { const t = localStorage.getItem('dashboard-theme'); if (t === 'dark' || t === 'light') this.setState({ theme: t }); } catch (e) { /* ignore */ }
+  }
+  renderVals() {
+    const theme = this.state.theme;
+    return {
+      ob: '{'+'{', cb: '}'+'}', theme,
+      themeLabel: theme === 'light' ? '\u263E Dark mode' : '\u2600 Light mode',
+      togTheme: () => {
+        const t = theme === 'light' ? 'dark' : 'light';
+        this.setState({ theme: t });
+        try { localStorage.setItem('dashboard-theme', t); } catch (e) { /* ignore */ }
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

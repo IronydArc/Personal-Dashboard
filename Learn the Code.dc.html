@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&amp;family=Karla:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet">
+<style>
+  html, body { margin:0; padding:0; }
+  body { font-family:'Karla', sans-serif; -webkit-font-smoothing:antialiased; }
+  [data-theme="light"] {
+    --bg:#FAF7F1; --surface:#FFFFFF; --text-primary:#33344A; --text-body:#4A4B63; --text-secondary:#6B6D85; --text-faint:#9A9BB0;
+    --border:#ECE8DE; --accent:#5C5F9E; --accent-hov:#43857D; --accent-muted:#ECEDF8;
+    --accent-soft-bg:#F2F0FA; --accent-soft-bd:#E1DFF0; --accent-soft-fg:#54567A;
+    --warn:#7A6A35; --warn-bg:#FAF6EC; --warn-bd:#EFE7CF; --good:#3E7A57; --risk:#8C5140;
+    --pre-bg:#26283A; --pre-fg:#E9EAF4; --pre-dim:#8A8CA6; --pre-hi:#A0A3E0;
+  }
+  [data-theme="dark"] {
+    --bg:#1D1E2B; --surface:#26283A; --text-primary:#E9EAF4; --text-body:#C6C8DC; --text-secondary:#B4B6CC; --text-faint:#8A8CA6;
+    --border:#383A52; --accent:#A0A3E0; --accent-hov:#7CC4B8; --accent-muted:#34365C;
+    --accent-soft-bg:#2E3052; --accent-soft-bd:#41436C; --accent-soft-fg:#C3C5E8;
+    --warn:#D9C88A; --warn-bg:#403A26; --warn-bd:#555033; --good:#8CCBA4; --risk:#E0A08D;
+    --pre-bg:#16171F; --pre-fg:#E9EAF4; --pre-dim:#8A8CA6; --pre-hi:#A0A3E0;
+  }
+  [data-theme] a { color:var(--accent); text-decoration:none; font-weight:600; }
+  [data-theme] a:hover { color:var(--accent-hov); }
+  * { box-sizing:border-box; }
+  [data-theme] code { font-family:'JetBrains Mono', monospace; font-size:0.92em; background:var(--accent-muted); padding:1px 6px; border-radius:6px; }
+  [data-theme] pre { font-family:'JetBrains Mono', monospace; font-size:12.5px; line-height:1.75; background:var(--pre-bg); color:var(--pre-fg); border-radius:14px; padding:18px 22px; overflow-x:auto; margin:0 0 14px; }
+  [data-theme] pre em { color:var(--pre-dim); font-style:normal; }
+  [data-theme] pre b { color:var(--pre-hi); font-weight:600; }
+  [data-theme] p, [data-theme] li { font-size:15px; line-height:1.65; color:var(--text-body); }
+  [data-theme] h2 { font-family:'Newsreader', serif; font-weight:500; font-size:30px; margin:0 0 6px; }
+  [data-theme] h3 { font-family:'Newsreader', serif; font-weight:500; font-size:20px; margin:22px 0 8px; }
+</style></helmet>
+<div data-theme="{{ theme }}" style="min-height:100vh; background:var(--bg); color:var(--text-primary); transition:background .3s;">
+<div style="max-width:860px; margin:0 auto; padding:56px 32px 120px;">
+
+  <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px;">
+    <div style="font-size:12px; font-weight:700; letter-spacing:0.14em; color:var(--text-faint);">PROJECT DOCUMENTATION · PART 2</div>
+    <button onClick="{{ togTheme }}" style="font-family:'Karla', sans-serif; font-size:13px; font-weight:700; color:var(--accent); background:var(--accent-muted); border:none; border-radius:99px; padding:8px 16px; cursor:pointer;">{{ themeLabel }}</button>
+  </div>
+  <h1 style="font-family:'Newsreader', serif; font-weight:500; font-size:44px; line-height:1.08; margin:0 0 14px;">JavaScript for this dashboard, from zero</h1>
+  <p style="margin:0 0 10px;">Part 1 (<a href="How These Files Work.dc.html">How these files work</a>) explained the architecture. This page teaches the actual JavaScript concepts the dashboard is built from — nothing more than what you need. Every example is real code from <code>Personal Dashboard.dc.html</code>, or a simplified version of it.</p>
+  <p style="margin:0 0 28px; font-size:14px; color:var(--text-secondary);">Read in order — each chapter builds on the previous one.</p>
+
+  <nav style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:48px;">
+    <a href="#c1" style="font-size:13px; padding:6px 14px; border-radius:99px; background:var(--surface); border:1px solid var(--border);">1 · Values</a>
+    <a href="#c2" style="font-size:13px; padding:6px 14px; border-radius:99px; background:var(--surface); border:1px solid var(--border);">2 · Objects</a>
+    <a href="#c3" style="font-size:13px; padding:6px 14px; border-radius:99px; background:var(--surface); border:1px solid var(--border);">3 · Arrays</a>
+    <a href="#c4" style="font-size:13px; padding:6px 14px; border-radius:99px; background:var(--surface); border:1px solid var(--border);">4 · Functions</a>
+    <a href="#c5" style="font-size:13px; padding:6px 14px; border-radius:99px; background:var(--surface); border:1px solid var(--border);">5 · .map()</a>
+    <a href="#c6" style="font-size:13px; padding:6px 14px; border-radius:99px; background:var(--surface); border:1px solid var(--border);">6 · Decisions</a>
+    <a href="#c7" style="font-size:13px; padding:6px 14px; border-radius:99px; background:var(--surface); border:1px solid var(--border);">7 · State</a>
+    <a href="#c8" style="font-size:13px; padding:6px 14px; border-radius:99px; background:var(--surface); border:1px solid var(--border);">8 · Saving</a>
+    <a href="#c9" style="font-size:13px; padding:6px 14px; border-radius:99px; background:var(--surface); border:1px solid var(--border);">9 · A real feature, end to end</a>
+    <a href="#c10" style="font-size:13px; padding:6px 14px; border-radius:99px; background:var(--surface); border:1px solid var(--border);">10 · Practice edits</a>
+  </nav>
+
+  <!-- 1 -->
+  <section id="c1" style="margin-bottom:52px;">
+    <h2>1 · Values and variables</h2>
+    <p>JavaScript works with <strong>values</strong>. The three kinds this file uses constantly:</p>
+    <pre>'dark'        <em>← a string  (text, always in quotes)</em>
+210           <em>← a number   (no quotes)</em>
+true / false  <em>← a boolean  (yes/no switch)</em></pre>
+    <p>A <strong>variable</strong> is a named box holding a value. <code>const</code> creates one that won't be re-assigned; <code>let</code> one that can:</p>
+    <pre>const S = this.state;   <em>← "S" is now a shorthand name for the state</em>
+let total = 0;          <em>← a counter that will change</em></pre>
+    <p style="background:var(--warn-bg); border:1px solid var(--warn-bd); border-radius:12px; padding:12px 16px; color:var(--warn);"><strong>Spot it in your file:</strong> the top of <code>renderVals()</code> starts with <code>const S = this.state;</code> and <code>const PLANS = this.plans();</code> — just short nicknames so the rest of the code is less wordy.</p>
+  </section>
+
+  <!-- 2 -->
+  <section id="c2" style="margin-bottom:52px;">
+    <h2>2 · Objects — labeled boxes inside boxes</h2>
+    <p>An <strong>object</strong> groups values under labels (called <em>keys</em>). It is written with curly braces:</p>
+    <pre>const route = {
+  key: 'A',                    <em>← key "key", value 'A' (string)</em>
+  title: 'CSC Type A',         <em>← key "title"</em>
+  tiers: [1, 2]                <em>← a key can hold ANY value, even an array</em>
+};</pre>
+    <p>You read a value out with a <strong>dot</strong>: <code>route.title</code> → <code>'CSC Type A'</code>. Dots chain into nested objects — this is the single most important idea for your file:</p>
+    <pre>PLANS.home.strategy.focus.title
+<em>  │     │      │       │     └─ finally: the string itself</em>
+<em>  │     │      │       └─ inside that, the "focus" object</em>
+<em>  │     │      └─ inside that, the "strategy" object</em>
+<em>  │     └─ the "home" object inside PLANS</em>
+<em>  └─ the big data object from plans()</em></pre>
+    <p>Your entire plan content — every route, tier, task — is one giant nested object returned by <code>plans()</code>. Editing content = finding the right key and changing its value. The template's <code>{{ ob }} n.label {{ cb }}</code> holes are exactly these dot-paths.</p>
+    <p>The alternative bracket form <code>checks[id]</code> does the same as a dot, but the key comes from a variable: if <code>id</code> is <code>'p2a'</code>, then <code>checks[id]</code> means <code>checks.p2a</code>.</p>
+  </section>
+
+  <!-- 3 -->
+  <section id="c3" style="margin-bottom:52px;">
+    <h2>3 · Arrays — ordered lists</h2>
+    <p>An <strong>array</strong> is a list of values in square brackets, in order:</p>
+    <pre>routes: [
+  { key: 'A', title: 'CSC Type A · General Scholar' },   <em>← position 0</em>
+  { key: 'B', title: 'CIS · Confucius Institute' },      <em>← position 1</em>
+  { key: 'C', title: 'CSC Type B · Bachelor of AI' }     <em>← position 2</em>
+]</pre>
+    <p>Counting starts at <strong>0</strong>, so <code>routes[0]</code> is Route A. <code>routes.length</code> is <code>3</code>. Arrays of objects like this are the pattern behind every repeated thing on screen: nav items, checklists, timeline bars. The template's <code>sc-for</code> loop walks an array and stamps out one block of markup per item.</p>
+    <p><strong>To add an item</strong> (say, a fourth route): copy one existing <code>{ … },</code> entry, paste it after, and edit its values. Mind the commas — every item except the last needs a trailing comma.</p>
+  </section>
+
+  <!-- 4 -->
+  <section id="c4" style="margin-bottom:52px;">
+    <h2>4 · Functions — stored actions</h2>
+    <p>A <strong>function</strong> is a recipe you define once and run later. Your file uses the compact <strong>arrow</strong> form:</p>
+    <pre>const <b>togTheme</b> = () => {
+  this.setState({ theme: 'light' });
+};
+<em>      └ name        └ () = "takes no ingredients"   └ the body: what happens when run</em></pre>
+    <p>Reading an arrow: <code>(inputs) => result</code> — "given these inputs, do/produce this." Two shortcuts you'll see:</p>
+    <ul style="margin:0 0 12px; padding-left:22px;">
+      <li>One input needs no parentheses: <code>r => r.title</code> ("given a route, produce its title").</li>
+      <li>If the body is a single expression, its value is returned automatically — no <code>return</code>, no braces.</li>
+    </ul>
+    <p>Crucially, <strong>a function is itself a value</strong>. It can sit in an object, be passed to the template, and run only when clicked. That is what <code>onClick="{{ ob }} togTheme {{ cb }}"</code> means: "here is the recipe; run it on click."</p>
+    <h3>A function that makes functions</h3>
+    <p>The trickiest pattern in your file. Each checkbox needs its own click recipe, so one factory builds them:</p>
+    <pre>const <b>togCheck</b> = (id) => () => {
+  <em>… toggle the checkbox whose name is `id` …</em>
+};
+
+togCheck('p2a')   <em>← calling the factory RETURNS a recipe for checkbox 'p2a'</em>
+<em>                    (nothing is toggled yet — the recipe runs on click)</em></pre>
+    <p>Read <code>(id) => () => …</code> as: "give me an <code>id</code>, and I hand you back a zero-input function that toggles that id."</p>
+  </section>
+
+  <!-- 5 -->
+  <section id="c5" style="margin-bottom:52px;">
+    <h2>5 · Transforming lists with .map()</h2>
+    <p><code>.map()</code> takes an array and a function, runs the function on <em>each item</em>, and returns a new array of the results. It is how raw plan data becomes display-ready data. Real example (simplified) — the strategy chips on Home:</p>
+    <pre>stRoutes: PLANS.home.strategy.focus.routes.map(r => ({
+  label: r.label,                <em>← copy the text through</em>
+  bg: TONES[r.tone].bg,          <em>← look up the color for its tone</em>
+  fg: TONES[r.tone].fg,
+  go: () => this.setState({ nav: 'plan', sel: r.go })   <em>← its click recipe</em>
+}))</pre>
+    <p>In words: "for each route <code>r</code> in the data, produce an object with a label, its colors, and a click handler." The template then loops over <code>stRoutes</code> with <code>sc-for</code> and renders one chip per entry.</p>
+    <p style="background:var(--warn-bg); border:1px solid var(--warn-bd); border-radius:12px; padding:12px 16px; color:var(--warn);"><strong>Syntax note:</strong> <code>r => ({ … })</code> — the parentheses around the braces mean "this is an object being returned," not a function body. Forgetting them is a classic error.</p>
+  </section>
+
+  <!-- 6 -->
+  <section id="c6" style="margin-bottom:52px;">
+    <h2>6 · Making decisions</h2>
+    <h3>Comparison</h3>
+    <pre>S.nav === 'home'    <em>← true if nav equals 'home'  (=== compares, = assigns!)</em>
+S.nav !== 'home'    <em>← true if it does NOT</em>
+score >= 210        <em>← numeric comparisons</em>
+!S.sbOpen           <em>← ! flips a boolean: "not open"</em></pre>
+    <h3>The ternary — a one-line if/else</h3>
+    <p><code>condition ? valueIfTrue : valueIfFalse</code>. Your file uses it everywhere to pick styles:</p>
+    <pre>theme === 'dark' ? 'Light mode' : 'Dark mode'   <em>← the toggle button's label</em>
+isMobile ? '1fr' : 'repeat(3, minmax(0, 1fr))'  <em>← 1 column on phone, 3 on desktop</em></pre>
+    <h3>Fallbacks with || and ??</h3>
+    <pre>localStorage.getItem('pf-track') || 'none'   <em>← use saved value, or 'none' if empty</em>
+this.props.dimStrength ?? 0.32               <em>← use the prop, or 0.32 if not set</em></pre>
+    <h3>Classic if</h3>
+    <pre>if (t) {
+  this.setState({ pfTrack: t });   <em>← runs only when t is non-empty</em>
+}</pre>
+    <p>Remember the template rule: none of this logic may live inside <code>{{ ob }} … {{ cb }}</code> holes. Decisions happen here in JavaScript; the template only receives the finished answer (like <code>isHome: S.nav === 'home'</code>).</p>
+  </section>
+
+  <!-- 7 -->
+  <section id="c7" style="margin-bottom:52px;">
+    <h2>7 · State — the app's memory, and why the screen updates</h2>
+    <p><strong>State</strong> is one object holding everything that can change while you use the app:</p>
+    <pre>state = {
+  theme: 'dark',     <em>← which theme</em>
+  nav: 'home',       <em>← which page is open</em>
+  sbOpen: true,      <em>← sidebar expanded?</em>
+  checks: {          }  <em>← which boxes are ticked, e.g. { p2a: true }</em>
+};</pre>
+    <p>The golden rule: <strong>never change it directly</strong>. Always go through <code>this.setState(…)</code>, which does two things: updates the values, then automatically re-runs <code>renderVals()</code> so the screen redraws. Assigning directly (<code>this.state.nav = 'plan'</code>) changes the memory but the screen never hears about it.</p>
+    <pre>this.setState({ nav: 'plan' });   <em>← merge: only nav changes, rest stays</em>
+
+this.setState(s => ({ n: s.n + 1 }));   <em>← function form: when the new value</em>
+<em>                                           depends on the current one</em></pre>
+    <p>So every interaction in the dashboard is the same three beats: <strong>click → setState → re-render</strong>. Nothing else. No code ever "finds the element and changes its color" — the color simply <em>depends on</em> state, and follows it.</p>
+  </section>
+
+  <!-- 8 -->
+  <section id="c8" style="margin-bottom:52px;">
+    <h2>8 · Saving — JSON and localStorage</h2>
+    <p>State lives in memory and dies on reload. To survive, it is written to <code>localStorage</code> — a tiny per-site key/value store in your browser. It only stores <em>strings</em>, so objects are converted with JSON:</p>
+    <pre>JSON.stringify({ p2a: true })   <em>→ the string '{"p2a":true}'   (object → text)</em>
+JSON.parse('{"p2a":true}')      <em>→ the object back            (text → object)</em></pre>
+    <p>Writing (inside the checkbox handler) and reading back (on load):</p>
+    <pre>localStorage.setItem('strategy-dashboard-checks', JSON.stringify(next));
+
+componentDidMount() {   <em>← runs once when the page opens</em>
+  const saved = JSON.parse(localStorage.getItem('strategy-dashboard-checks') || '{ }');
+  this.setState({ checks: saved });
+}</pre>
+    <p>The <code>try { … } catch (e) { … }</code> wrappers around these in your file mean: "attempt this; if it fails (e.g. storage blocked), don't crash — just skip it."</p>
+  </section>
+
+  <!-- 9 -->
+  <section id="c9" style="margin-bottom:52px;">
+    <h2>9 · A real feature, end to end: ticking a checkbox</h2>
+    <p>Everything above, working together. Follow one click through the whole system.</p>
+    <div style="display:flex; flex-direction:column; gap:10px;">
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px 18px;">
+        <div style="font-size:11.5px; font-weight:700; letter-spacing:0.1em; color:var(--text-faint); margin-bottom:8px;">STEP 1 · THE TEMPLATE RENDERS THE BOX</div>
+        <pre style="margin:0 0 8px;">&lt;div <b>onClick</b>="{{ ob }} ut.togCheck {{ cb }}" style="… background:{{ ob }} ut.boxBg {{ cb }};"&gt;{{ ob }} ut.mark {{ cb }}&lt;/div&gt;</pre>
+        <p style="margin:0; font-size:14px;">Each today-item <code>ut</code> arrives from <code>renderVals()</code> already carrying its own click recipe (<code>togCheck</code>), its colors, and its ✓ mark.</p>
+      </div>
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px 18px;">
+        <div style="font-size:11.5px; font-weight:700; letter-spacing:0.1em; color:var(--text-faint); margin-bottom:8px;">STEP 2 · THE HANDLER RUNS ON CLICK</div>
+        <pre style="margin:0 0 8px;">const <b>togCheck</b> = (id) => () => {
+  const next = Object.assign({ }, this.state.checks, { [id]: !this.state.checks[id] });
+  this.setState({ checks: next });
+  try { localStorage.setItem('strategy-dashboard-checks', JSON.stringify(next)); }
+  catch (err) { <em>/* ignore */</em> }
+};</pre>
+        <p style="margin:0; font-size:14px;">Line by line: build <code>next</code> — a fresh copy of all checks (<code>Object.assign</code> = "copy these objects together into a new one") with this one <code>id</code> flipped (<code>!</code> = opposite of its current value). Then <code>setState</code> updates memory, and <code>localStorage.setItem</code> saves it as text.</p>
+      </div>
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px 18px;">
+        <div style="font-size:11.5px; font-weight:700; letter-spacing:0.1em; color:var(--text-faint); margin-bottom:8px;">STEP 3 · THE SCREEN FOLLOWS</div>
+        <p style="margin:0; font-size:14px;"><code>setState</code> triggers <code>renderVals()</code> again. It recomputes each item's <code>boxBg</code>/<code>mark</code> from the new <code>checks</code>, the holes refill, and the box appears ticked — here <em>and</em> on the plan page, because both read the same state.</p>
+      </div>
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px 18px;">
+        <div style="font-size:11.5px; font-weight:700; letter-spacing:0.1em; color:var(--text-faint); margin-bottom:8px;">STEP 4 · NEXT VISIT</div>
+        <p style="margin:0; font-size:14px;"><code>componentDidMount()</code> reads the saved string back, <code>JSON.parse</code> turns it into an object, <code>setState</code> restores it — your ticks are still there.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 -->
+  <section id="c10">
+    <h2>10 · Practice edits — safe first steps</h2>
+    <p>Do these in order. Before each one, duplicate the file as a backup. If the page goes blank, you likely broke a comma, quote, or brace — undo and compare.</p>
+    <div style="display:flex; flex-direction:column; gap:8px;">
+      <div style="background:var(--accent-soft-bg); border:1px solid var(--accent-soft-bd); border-radius:12px; padding:13px 16px; font-size:14px; line-height:1.55; color:var(--accent-soft-fg);"><strong>① Change a string.</strong> In <code>plans()</code>, find <code>title: 'Study Abroad Plan'</code> and reword it. Keep the quotes. If your text contains an apostrophe, use the curly kind (’) or it will end the string early.</div>
+      <div style="background:var(--accent-soft-bg); border:1px solid var(--accent-soft-bd); border-radius:12px; padding:13px 16px; font-size:14px; line-height:1.55; color:var(--accent-soft-fg);"><strong>② Add an item to an array.</strong> In an actions list, copy one <code>{ … },</code> task entry, paste it below, change its <code>id</code> (must be unique — it's the checkbox's save-name) and its text.</div>
+      <div style="background:var(--accent-soft-bg); border:1px solid var(--accent-soft-bd); border-radius:12px; padding:13px 16px; font-size:14px; line-height:1.55; color:var(--accent-soft-fg);"><strong>③ Change a decision.</strong> Find <code>theme: 'dark'</code> in <code>state</code> and make the default <code>'light'</code>. One string, but now you've edited behavior.</div>
+      <div style="background:var(--accent-soft-bg); border:1px solid var(--accent-soft-bd); border-radius:12px; padding:13px 16px; font-size:14px; line-height:1.55; color:var(--accent-soft-fg);"><strong>④ Follow a value.</strong> Pick any text on screen, search the file for it, and trace: which <code>plans()</code> key holds it → which <code>renderVals()</code> line passes it on → which template hole displays it. Once you can do this, you can change anything.</div>
+    </div>
+    <p style="margin-top:22px;">← Back to <a href="How These Files Work.dc.html">Part 1 · How these files work</a></p>
+  </section>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { theme: 'light' };
+  componentDidMount() {
+    try { const t = localStorage.getItem('dashboard-theme'); if (t === 'dark' || t === 'light') this.setState({ theme: t }); } catch (e) { /* ignore */ }
+  }
+  renderVals() {
+    const theme = this.state.theme;
+    return {
+      ob: '{'+'{', cb: '}'+'}', theme,
+      themeLabel: theme === 'light' ? '\u263E Dark mode' : '\u2600 Light mode',
+      togTheme: () => {
+        const t = theme === 'light' ? 'dark' : 'light';
+        this.setState({ theme: t });
+        try { localStorage.setItem('dashboard-theme', t); } catch (e) { /* ignore */ }
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>
