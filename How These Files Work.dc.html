@@ -36,12 +36,12 @@
 </style></helmet>
 <div data-theme="{{ theme }}" style="min-height:100vh; background:var(--bg); color:var(--text-primary); transition:background .3s;">
 <div style="max-width:860px; margin:0 auto; padding:56px 32px 120px;">
-
   <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px;">
     <div style="font-size:12px; font-weight:700; letter-spacing:0.14em; color:var(--text-faint);">PROJECT DOCUMENTATION</div>
-    <div style="display:flex; align-items:center; gap:8px;"></div>
+    <div style="display:flex; align-items:center; gap:8px;">
     <a href="index.html" style="font-size:13px; font-weight:700; padding:8px 16px; border-radius:99px; border:1px solid var(--border); background:var(--surface);">← Dashboard</a>
     <button onClick="{{ togTheme }}" style="font-family:'Karla', sans-serif; font-size:13px; font-weight:700; color:var(--accent); background:var(--accent-muted); border:none; border-radius:99px; padding:8px 16px; cursor:pointer;">{{ themeLabel }}</button>
+    </div>
   </div>
   <h1 style="font-family:'Newsreader', serif; font-weight:500; font-size:44px; line-height:1.08; margin:0 0 14px;">How these files work</h1>
   <p style="font-size:16px; line-height:1.6; color:var(--text-secondary); margin:0 0 28px;">Your dashboard is not a classic HTML + CSS + JS site. It is a single <strong>Design Component</strong> file (<code style="font-family:'JetBrains Mono', monospace; font-size:14px; background:var(--accent-muted); padding:2px 6px; border-radius:6px;">.dc.html</code>) plus a shared runtime (<code style="font-family:'JetBrains Mono', monospace; font-size:14px; background:var(--accent-muted); padding:2px 6px; border-radius:6px;">support.js</code>). This page explains every moving part and tells you exactly where to edit what. New to JavaScript? Read <a href="Learn the Code.dc.html">Part 2 · JavaScript from zero</a> after this overview.</p>
